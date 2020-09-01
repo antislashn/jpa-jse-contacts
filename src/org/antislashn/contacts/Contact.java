@@ -1,6 +1,8 @@
 package org.antislashn.contacts;
 
 import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +10,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -18,7 +23,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "adresse")
 
 @Entity
 @Table(name="personnes")
@@ -30,6 +35,12 @@ public class Contact implements Serializable{
 	private Civilite civilite;
 	private String nom;
 	private String prenom;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinTable(name="contacts_adresses",
+		joinColumns=@JoinColumn(name="fk_personne"),
+		inverseJoinColumns = @JoinColumn(name="fk_adresse"))
+	private Adresse adresse;
 	
 	public Contact(Civilite civilite, String nom, String prenom) {
 		this.civilite = civilite;

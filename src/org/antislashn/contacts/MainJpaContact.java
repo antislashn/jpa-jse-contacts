@@ -11,20 +11,21 @@ public class MainJpaContact {
 	public static void main(String[] args) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("contacts");
 		ContactDao dao = new ContactDao(emf);
+		AdresseDAO adresseDao = new AdresseDAO(emf);
 		
-		Optional<Contact> opt = dao.findById(100);
+		Optional<Contact> opt = dao.findById(2);
 		
 		opt.ifPresent(System.out::println);
-
-		Contact c1 = new Contact(Civilite.M,"Toto","Titi");
+		
+		Contact c1 = new Contact(Civilite.Pr, "Foo", "Jean");
+		Adresse a1 = new Adresse("rue de la Soif", "35000", "Rennes");
+		c1.setAdresse(a1);
 		dao.save(c1);
-		System.out.println(c1);
-		c1.setPrenom("François");
-		dao.update(c1);
-		System.out.println(c1);
-		dao.delete(c1);
-		emf.close();
+		
+		Optional<Adresse> opt2 = adresseDao.findById(1);
+		opt2.ifPresent(System.out::println);
 
+		emf.close();
 	}
 
 }
