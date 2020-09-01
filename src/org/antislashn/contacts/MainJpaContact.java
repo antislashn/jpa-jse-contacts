@@ -17,11 +17,12 @@ public class MainJpaContact {
 		opt.ifPresent(System.out::println);
 
 		Contact c1 = new Contact(Civilite.M,"Toto","Titi");
-		dao.update(c1);
+		dao.save(c1);
 		System.out.println(c1);
 		c1.setPrenom("François");
 		dao.update(c1);
 		System.out.println(c1);
+		dao.delete(c1);
 		emf.close();
 
 	}

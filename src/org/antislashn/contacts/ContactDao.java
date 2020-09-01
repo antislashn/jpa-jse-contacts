@@ -19,13 +19,13 @@ public class ContactDao {
 		em.close();
 		return Optional.ofNullable(contact);
 	}
-	
+
 	public void update(Contact contact) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.merge(contact);
 		em.getTransaction().commit();
-		em.close();		
+		em.close();
 	}
 
 	public void save(Contact contact) {
@@ -44,6 +44,38 @@ public class ContactDao {
 			em.getTransaction().commit();
 			em.close();
 		}
+	}
+
+	public void saveOrUpdate(Contact c) {
+		if (c != null) {
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			if (c.getId() == 0) {
+				em.persist(c);
+			} else {
+				em.merge(c);
+			}
+			em.getTransaction().commit();
+			em.close();
+		}
+	}
+
+	public void delete(Contact contact) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		Contact c = em.find(Contact.class, contact.getId());
+		em.remove(c);
+		em.getTransaction().commit();
+		em.close();
+	}
+
+	public List<Contact> findByCivilite(Civilite civilite) {
+		EntityManager em = emf.createEntityManager();
+		String query = "SELECT c FROM Contact c WHERE c.civlite = :civilite";
+		List<Contact> contacts = em.createQuery(query, Contact.class).setParameter("civilite", civilite)
+				.getResultList();
+		em.close();
+		return contacts;
 	}
 
 }
