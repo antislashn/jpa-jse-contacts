@@ -31,6 +31,14 @@ public class ContactDao {
 	public void save(Contact contact) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
+		Adresse a = contact.getAdresse();
+		if (a != null) {
+			if (a.getId() == 0) {
+				em.persist(a);
+			} else {
+				em.merge(a);
+			}
+		}
 		em.persist(contact);
 		em.getTransaction().commit();
 		em.close();

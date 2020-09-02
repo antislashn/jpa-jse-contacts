@@ -1,17 +1,22 @@
 package org.antislashn.contacts;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,7 +28,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = "adresse")
+@ToString(exclude = "adresses")
 
 @Entity
 @Table(name="personnes")
@@ -36,10 +41,10 @@ public class Contact implements Serializable{
 	private String nom;
 	private String prenom;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinTable(name="contacts_adresses",
-		joinColumns=@JoinColumn(name="fk_personne"),
-		inverseJoinColumns = @JoinColumn(name="fk_adresse"))
+	@ManyToOne
+	@JoinTable(name = "contacts_adresses",
+			joinColumns = @JoinColumn(name="fk_personne"),
+			inverseJoinColumns = @JoinColumn(name = "fk_adresse"))
 	private Adresse adresse;
 	
 	public Contact(Civilite civilite, String nom, String prenom) {
@@ -47,6 +52,7 @@ public class Contact implements Serializable{
 		this.nom = nom;
 		this.prenom = prenom;
 	}
+	
 	
 	
 	

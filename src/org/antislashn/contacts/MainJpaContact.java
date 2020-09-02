@@ -1,5 +1,6 @@
 package org.antislashn.contacts;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManagerFactory;
@@ -11,20 +12,14 @@ public class MainJpaContact {
 	public static void main(String[] args) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("contacts");
 		ContactDao dao = new ContactDao(emf);
-		AdresseDAO adresseDao = new AdresseDAO(emf);
+		Adresse a = new Adresse("rue de la mer", "35400", "Saint-Malo");
+		Contact c1 = new Contact(Civilite.M, "Leroux", "Gaston");
+		Contact c2 = new Contact(Civilite.Mme, "Blanc-Sec", "Adèle");
+		c1.setAdresse(a);
+		c2.setAdresse(a);
 		
-		Optional<Contact> opt = dao.findById(2);
-		
-		opt.ifPresent(System.out::println);
-		
-		Contact c1 = new Contact(Civilite.Pr, "Foo", "Jean");
-		Adresse a1 = new Adresse("rue de la Soif", "35000", "Rennes");
-		c1.setAdresse(a1);
 		dao.save(c1);
-		
-		Optional<Adresse> opt2 = adresseDao.findById(1);
-		opt2.ifPresent(System.out::println);
-
+		dao.save(c2);
 		emf.close();
 	}
 

@@ -32,9 +32,7 @@ public class Adresse implements Serializable{
 	private String codePostal;
 	private String ville;
 	private String pays = "France";
-	
-	@OneToOne(mappedBy = "adresse")
-	private Contact contact;
+
 	
 	
 	public Adresse(String rue, String codePostal, String ville) {
